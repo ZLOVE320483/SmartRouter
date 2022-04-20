@@ -1,3 +1,5 @@
 rootProject.name = "SmartRouter"
 include ':app'
 include ':router-annotations'
+include ':router-processor'
+include ':profile'
