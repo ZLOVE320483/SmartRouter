@@ -1,0 +1,46 @@
+apply plugin: 'maven'
+
+Properties rootProjectProperties = new Properties()
+rootProjectProperties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+def REPO_URL = rootProjectProperties.getProperty("REPO_URL")
+def GROUP_ID = rootProjectProperties.getProperty("GROUP_ID")
+
+Properties childProjectProperties = new Properties()
+childProjectProperties.load(project.file('gradle.properties').newDataInputStream())
+def VERSION_NAME = childProjectProperties.getProperty("VERSION_NAME")
+def ARTIFACT_ID = childProjectProperties.getProperty("ARTIFACT_ID")
+
+println("maven-publish REPO_URL = $REPO_URL")
+println("maven-publish GROUP_ID = $GROUP_ID")
+println("maven-publish VERSION_NAME = $VERSION_NAME")
+println("maven-publish ARTIFACT_ID = $ARTIFACT_ID")
+
+// ------------------------------------------------------------------------
+// 发布到本地 maven 仓库的任务
+// ------------------------------------------------------------------------
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            // 填入发布信息
+            repository(url: uri(REPO_URL)) {
+                pom.groupId = GROUP_ID
+                pom.artifactId = ARTIFACT_ID
+                pom.version = VERSION_NAME
+            }
+
+            // 修改 router-processor 的 build.gradle 内容
+            // 原本内容：dependencies { implementation project(':router-annotations') }
+            // 修改后的内容：dependencies { implementation 'com.watayouxiang.router:router-annotations:1.0.0' }
+            pom.whenConfigured { pom ->
+                pom.dependencies.forEach { dep ->
+                    if (dep.getVersion() == "unspecified") {
+                        dep.setGroupId(GROUP_ID)
+                        dep.setVersion(VERSION_NAME)
+                    }
+                }
+            }
+        }
+    }
+}
