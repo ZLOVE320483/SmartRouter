@@ -9,7 +9,7 @@ import android.util.Log
 /**
  * Author by zlove, Email zlove.zhang@bytedance.com, Date on 2022/4/22.
  */
-object Router {
+object SmartRouter {
     private const val TAG = "Router"
     private const val GENERATED_MAPPING = "com.zlove.smart.router.mapping.RouterMapping"
     private val mapping = HashMap<String, String>()
@@ -53,34 +53,34 @@ object Router {
             if (rSchema == schema && rHost == host && rPath == path) {
                 targetActivityClass = it.value
             }
+        }
 
-            if (targetActivityClass == "") {
-                Log.e(TAG, "open:     no destination found")
-                return
-            }
+        if (targetActivityClass == "") {
+            Log.e(TAG, "open:     no destination found")
+            return
+        }
 
-            // 2、解析URL里的参数，封装成一个 Bundle
-            val bundle = Bundle()
-            val query = uri.query
-            query?.let { q ->
-                if (q.length >= 3) {// a=b 至少三个字符
-                    val args = q.split("&")
-                    args.onEach { arg ->
-                        val splits = arg.split("=")
-                        bundle.putSerializable(splits[0], splits[1])
-                    }
+        // 2、解析URL里的参数，封装成一个 Bundle
+        val bundle = Bundle()
+        val query = uri.query
+        query?.let { q ->
+            if (q.length >= 3) {// a=b 至少三个字符
+                val args = q.split("&")
+                args.onEach { arg ->
+                    val splits = arg.split("=")
+                    bundle.putSerializable(splits[0], splits[1])
                 }
             }
+        }
 
-            // 3、打开对应的Activity，并传入参数
-            try {
-                val activity = Class.forName(targetActivityClass)
-                val intent = Intent(context, activity)
-                intent.putExtras(bundle)
-                context.startActivity(intent)
-            } catch (e: Throwable) {
-                Log.e(TAG, "go: error while start activity: $targetActivityClass, e = $e")
-            }
+        // 3、打开对应的Activity，并传入参数
+        try {
+            val activity = Class.forName(targetActivityClass)
+            val intent = Intent(context, activity)
+            intent.putExtras(bundle)
+            context.startActivity(intent)
+        } catch (e: Throwable) {
+            Log.e(TAG, "go: error while start activity: $targetActivityClass, e = $e")
         }
     }
 

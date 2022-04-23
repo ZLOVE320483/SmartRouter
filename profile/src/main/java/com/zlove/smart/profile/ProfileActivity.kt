@@ -1,6 +1,7 @@
 package com.zlove.smart.profile
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.zlove.smart.router.annotations.Destination
 
@@ -13,5 +14,8 @@ class ProfileActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        val param = intent.getStringExtra("key")
+        findViewById<TextView>(R.id.content).text = "param value: $param"
     }
 }

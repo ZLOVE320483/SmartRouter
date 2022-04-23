@@ -8,7 +8,7 @@ class RouterMappingByteCodeBuilder implements Opcodes {
 
     public static final String CLASS_NAME = "com/zlove/smart/router/mapping/RouterMapping"
 
-    static byte[] get(String[] allMappingNames) {
+    static byte[] get(Set<String> allMappingNames) {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
 
         // 创建类
