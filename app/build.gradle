@@ -4,17 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'router-plugin'
 apply plugin: 'assets-plugin'
 
-router {
-    wikiDir getRootDir().absolutePath
-}
-
 android {
-    compileSdk 31
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.zlove.smart.app"
-        minSdk 21
-        targetSdk 31
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -40,9 +36,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
@@ -61,4 +54,8 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+router {
+    wikiDir getRootDir().absolutePath
 }

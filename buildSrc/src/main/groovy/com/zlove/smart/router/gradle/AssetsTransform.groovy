@@ -53,7 +53,7 @@ class AssetsTransform extends Transform {
                     def configFile = new File(
                             "${outputFile.absolutePath}/abmock_model.txt")
                     PrintWriter writer = new PrintWriter(configFile)
-                    writer.print("zlove.zhang")
+                    writer.print("I am zlove.zhang, I am a handsome boy.")
                     writer.close()
                 }
             }
